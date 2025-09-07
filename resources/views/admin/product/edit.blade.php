@@ -19,7 +19,9 @@
                                 <select name="category_id" id="" class="form-control form-select" >
                                     <option value="">select Category:</option> 
                                     @foreach($categories as $category)
-                                        <option selected value="{{ $category->id }}" >{{ $category->category_name }}</option> 
+                                       <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                                            {{ $category->category_name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -31,7 +33,10 @@
                                 <select name="sub_category_id" id="" class="form-control form-select" >
                                     <option value="">select Category:</option> 
                                     @foreach($sub_categories as $sub_category)
-                                        <option selected value="{{ $sub_category->id }}" >{{ $sub_category->sub_category_name }}</option> 
+                                        <option value="{{ $sub_category->id }}" {{ $product->sub_category_id == $sub_category->id ? 'selected' : '' }}>
+                                                {{ $sub_category->sub_category_name }}
+                                        </option>
+
                                     @endforeach
                                 </select>
                             </div>
@@ -44,7 +49,9 @@
                                 <select name="brand_id" id="" class="form-control form-select" >
                                     <option value="">Select Brand:</option> 
                                     @foreach($brands as $brand)
-                                        <option selected value="{{ $brand->id }}" >{{ $brand->brand_name }}</option> 
+                                        <option value="{{ $brand->id }}" {{ $product->brand_id == $brand->id ? 'selected' : '' }}>
+                                            {{ $brand->brand_name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -61,27 +68,45 @@
                              @enderror
                         </div>
 
-                        {{-- product description field --}}
-                        <div class="form-group row mb-3">
-                            <label for="exampleInputEmail3" class="col-sm-3 col-form-label">Product Description <span class="text-danger">*</span></label>
+                        {{-- Product Code --}}
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Product Code <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" name="product_description" id="exampleInputEmail3" placeholder="Product Description">{{ $product->product_description }}</textarea>                              
+                                <input type="number" value="{{ $product->product_code }}" class="form-control" name="product_code" placeholder="Product code"/>
+                                @error('product_code')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                            @error('product_description')
-                                <strong class="text-danger">{{$message}}</strong>
-                             @enderror
+                        </div>
+
+                        {{-- Short Description --}}
+                          <div class="mb-3 row">
+                            <label for="exampleInputEmail3" class="col-sm-3 control-label">Short Description <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" name="short_description" id="exampleInputEmail3" placeholder="Short Description">{{ $product->short_description }}</textarea>
+                            </div>
+                        </div>
+                        {{-- Long Description --}}
+                        <div class="mb-3 row">
+                            <label for="exampleInputEmail34" class="col-sm-3 control-label">Long Description <span class="text-danger">*</span></label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control summernote" name="long_description" id="exampleInputEmail34" placeholder="Long Description">{{ $product->long_description }}</textarea>
+                            </div>
                         </div>
 
                         
-                        {{-- Product price  --}}
-                        <div class="form-group row mb-3">
-                            <label for="exampleInputEmail3" class="col-sm-3 col-form-label">Product Price <span class="text-danger">*</span></label>
+                            {{-- Product Price --}}
+                         <div class="mb-3 row">
+                            <label for="" class="col-sm-3 control-label">Product Price <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" name="product_price" id="exampleInputEmail3" placeholder="Product Price">{{ $product->product_price }}</textarea>                              
+                                <div class="input-group">
+                                    <input type="number" class="form-control" value="{{ $product->regular_price }}" name="regular_price" id="" placeholder="Regular Price"/>
+                                    <input type="number" class="form-control" value="{{ $product->discount_price }}" name="discount_price" id="" placeholder="Discount Price"/>
+                                </div>
+                                 @error('product_price')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                            @error('Product_price')
-                                <strong class="text-danger">{{$message}}</strong>
-                             @enderror
                         </div>
 
                     {{-- Category Image --}}
@@ -91,11 +116,11 @@
                             <input type="file" name="image" class="form-control" onchange="previewImage(event)"/>
                             
                             {{-- Old Image Preview --}}
-                            <img id="preview" src="{{ asset($brand->image) }}" 
+                            <img id="preview" src="{{ asset($product->image) }}" 
                                  alt="Image Preview" 
                                  height="100" width="130" 
                                  class="mt-2" 
-                                 style="{{ $brand->image ? '' : 'display:none;' }}"/>
+                                 style="{{ $product->image ? '' : 'display:none;' }}"/>
                         </div>
                         @error('image')
                             <strong class="text-danger">{{ $message }}</strong>
@@ -122,7 +147,7 @@
 
                         <div class="form-group row">
                             <div class="offset-sm-3 col-sm-9">
-                                <button type="submit" class="btn btn-success text-white">Create</button>
+                                <button type="submit" class="btn btn-success text-white">Update</button>
                             </div>
                         </div>
 

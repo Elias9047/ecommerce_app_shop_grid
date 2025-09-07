@@ -29,7 +29,7 @@ class Sub_category extends Model
             'category_id'=>'required',
             'sub_category_name' => 'required|max:20',
             'sub_category_description' => 'required|max:2000',
-            'image' => 'required|image|mimes:jpg,jpeg,gif,png|dimensions:min_width=300,min_height=300'
+            'image' => 'required|image|mimes:jpg,jpeg,gif,png'
         ]);
 
         self::$sub_category =  new Sub_category();

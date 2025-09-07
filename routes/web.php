@@ -8,7 +8,6 @@ use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ProductController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,9 +24,12 @@ use App\Http\Controllers\ProductController;
 // });
 
 Route::get('/',[HomeController::class,'index'])->name('home');
+Route::get('/category_product/{id}',[HomeController::class,'category_product'])->name('category_product');
+Route::get('/subCategory_product/{id}',[HomeController::class,'subCategory_product'])->name('subCategory_product');
+
+
 
 // admin routes
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -53,6 +55,8 @@ Route::middleware([
     Route::get('/edit_sub_category/{id}',[SubCategoryController::class,'edit'])->name('edit_sub_category');
     Route::post('/update_sub_category/{id}',[SubCategoryController::class,'update'])->name('update_sub_category');
     Route::delete('/delete_sub_category/{id}',[SubCategoryController::class,'destroy'])->name('delete_sub_category');
+    Route::get('/get-subcategories/{category_id}', [SubCategoryController::class, 'getSubcategories']);
+
 
     // brand
    Route::get('/create_brand',[BrandController::class,'create'])->name('create_brand');
@@ -61,6 +65,7 @@ Route::middleware([
    Route::get('/edit_brand/{id}',[BrandController::class,'edit'])->name('edit_brand');
    Route::post('/update_brand/{id}',[BrandController::class,'update'])->name('update_brand');
    Route::delete('/delete_brand/{id}',[BrandController::class,'destroy'])->name('delete_brand');
+   Route::get('/get-brands/{sub_category_id}', [BrandController::class, 'getBrands']);
 
 
    // Product

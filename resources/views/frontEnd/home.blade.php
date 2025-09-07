@@ -184,19 +184,35 @@ Apple Watch Series 6</a></h4>
 <div class="nav-inner">
 
 <div class="mega-category-menu">
-<span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
-<ul class="sub-category">
-@foreach ($categories as $category)
-    <li><a href="product-grids.html">{{$category->category_name}} <i class="lni lni-chevron-right"></i></a>
-@endforeach
+    <span class="cat-button">
+        <i class="lni lni-menu"></i> All Categories
+    </span>
+    <ul class="sub-category">
+        @foreach ($categories as $category)
+            <li>
+                <a href="{{ route('category_product',['id'=>$category->id])}}">
+                    {{ $category->category_name }}
+                    <i class="lni lni-chevron-right"></i>
+                </a>
 
-<ul class="inner-sub-category">
-    @foreach ($sub_categories as $sub_category)
-        <li><a href="product-grids.html">{{$sub_category->sub_category_name}} <i class="lni lni-chevron-right"></i></a>
-    @endforeach
-</ul>
-
+                {{-- Inner Sub Category --}}
+                <ul class="inner-sub-category">
+                    @foreach ($sub_categories as $sub_category)
+                        @if ($sub_category->category_id == $category->id) 
+                            <li>
+                                <a href="{{ route('subCategory_product',['id'=>$sub_category->id])}}">
+                                    {{ $sub_category->sub_category_name }}
+                                    <i class="lni lni-chevron-right"></i>
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
+            </li>
+        @endforeach
+    </ul>
 </div>
+
 
 
 <nav class="navbar navbar-expand-lg">

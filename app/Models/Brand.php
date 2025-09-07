@@ -16,7 +16,7 @@ class Brand extends Model
         if ($request->file('image')) {
             self::$image = $request->file('image');
             self::$imageName = date('YmdHis').'.'.self::$image->getClientOriginalExtension();
-            self::$directory    = 'upload/subcategory_images/';
+            self::$directory    = 'upload/brand_images/';
             self::$image->move(self::$directory, self::$imageName);
             self::$imageUrl     = self::$directory.self::$imageName;
             return self::$imageUrl;
@@ -29,7 +29,7 @@ class Brand extends Model
             'sub_category_id'=>'required',
             'brand_name' => 'required|max:20',
             'brand_description' => 'required|max:200',
-            'image' => 'required|image|mimes:jpg,jpeg,gif,png|dimensions:min_width=300,min_height=300'
+            'image' => 'required|image|mimes:jpg,jpeg,gif,png'
         ]);
 
         self::$brand =  new Brand();

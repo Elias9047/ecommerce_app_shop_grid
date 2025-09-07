@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Sub_category;
 
 class Category extends Model
 {
@@ -17,7 +18,7 @@ class Category extends Model
          if ($request->file('image')) {
             self::$image = $request->file('image');
             self::$imageName = time().'.'.self::$image->getClientOriginalExtension();
-            self::$directory    = 'upload/subcategory_images/';
+            self::$directory    = 'upload/category_images/';
             self::$image->move(self::$directory, self::$imageName);
             self::$imageUrl     = self::$directory.self::$imageName;
             return self::$imageUrl;
@@ -29,7 +30,7 @@ class Category extends Model
          $request->validate([
             'category_name' => 'required|max:20',
             'category_description' => 'required|max:2000',
-            'image' => 'required|image|mimes:jpg,jpeg,gif,png|dimensions:min_width=300,min_height=300'
+            'image' => 'required|image|mimes:jpg,jpeg,gif,png'
         ]);
 
         self::$category = new Category();
@@ -73,5 +74,11 @@ class Category extends Model
         }
         self::$category->delete();
     }
+    // relation category to subcategories
+   public function subcategories()
+    {
+        return $this->hasMany(Sub_category::class, 'category_id');
+    }
+
 
 }

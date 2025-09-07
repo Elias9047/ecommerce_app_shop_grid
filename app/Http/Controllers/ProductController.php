@@ -41,7 +41,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         Product::productStore($request);
-        return redirect('/index_product')->with('message', 'Product created successfully.');
+        return redirect('/create_product')->with('message', 'Product created successfully.');
     }
 
     /**

@@ -17,7 +17,7 @@
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label">Category Name<span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select name="category_id" id="" class="form-control form-select" >
+                                <select name="category_id" id="category" class="form-control form-select" >
                                     <option value="">Select category:</option> 
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" >{{ $category->category_name }}</option> 
@@ -29,7 +29,7 @@
                            <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label">Sub_Category Name<span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <select name="sub_category_id" id="" class="form-control form-select" >
+                                <select name="sub_category_id" id="sub_category_id" class="form-control form-select" >
                                     <option value="">Select Sub_category:</option> 
                                     @foreach($sub_categories as $sub_category)
                                         <option value="{{ $sub_category->id }}" >{{ $sub_category->sub_category_name }}</option> 
@@ -77,14 +77,6 @@
                                 output.style.display = 'block';
                             }
                         </script>
-{{-- 
-                        <div class="form-group row mb-3">
-                            <label for="inputPassword4" class="col-sm-3 col-form-label">Publication Status</label>
-                            <div class="col-sm-9">
-                                <label class="me-3"><input type="radio" name="status"  value="1" checked> Published </label>
-                                <label><input type="radio" name="status"  value="2"> Unpublished </label>
-                            </div>
-                        </div> --}}
 
                         <div class="form-group row">
                             <div class="offset-sm-3 col-sm-9">
@@ -99,3 +91,37 @@
     </div>
 
 @endsection
+
+
+
+{{-- jQuery AJAX for dependent dropdown --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        // Category -> Subcategory
+        $('#category').on('change', function () {
+            var category_id = $(this).val();
+            if (category_id) {
+                $.ajax({
+                    url: '{{ url("/get-subcategories") }}/' + category_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#sub_category_id').empty();
+                        $('#sub_category_id').append('<option value="">-- Select sub_category_id --</option>');
+                        $('#brand').empty();
+                        $('#brand').append('<option value="">-- Select Brand --</option>');
+                        $.each(data, function (key, subcat) {
+                            $('#sub_category_id').append('<option value="' + subcat.id + '">' + subcat.sub_category_name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#sub_category_id').empty().append('<option value="">-- Select sub_category_id --</option>');
+                $('#brand').empty().append('<option value="">-- Select Brand --</option>');
+            }
+        });
+
+    });
+</script>

@@ -67,15 +67,7 @@
                                 output.style.display = 'block';
                             }
                         </script>
-{{-- 
-                        <div class="form-group row mb-3">
-                            <label for="inputPassword4" class="col-sm-3 col-form-label">Publication Status</label>
-                            <div class="col-sm-9">
-                                <label class="me-3"><input type="radio" name="status"  value="1" checked> Published </label>
-                                <label><input type="radio" name="status"  value="2"> Unpublished </label>
-                            </div>
-                        </div> --}}
-
+                        
                         <div class="form-group row">
                             <div class="offset-sm-3 col-sm-9">
                                 <button type="submit" class="btn btn-success text-white">Create</button>

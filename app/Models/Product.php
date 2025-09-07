@@ -10,44 +10,66 @@ class Product extends Model
     use HasFactory;
 
         private static $product, $image, $imageName, $directory, $imageUrl;
-        protected $fillable = ['product_name', 'product_description', 'image', 'status']; // hacker don't inject
+        protected $fillable = [
+            'category_id', 'sub_category_id', 'brand_id',
+            'product_name', 'product_code', 'product_model',
+            'stock_amount', 'regular_price', 'discount_price',
+            'short_description', 'long_description', 'image'
+        ]; // hacker don't inject
+
     // image store
     public static function getImageUrl($request){
-        if ($request->file('image')) {
+         if ($request->file('image')) {
             self::$image = $request->file('image');
             self::$imageName = date('YmdHis').'.'.self::$image->getClientOriginalExtension();
-            self::$directory    = 'upload/subcategory_images/';
+            self::$directory    = 'upload/product_images/';
             self::$image->move(self::$directory, self::$imageName);
             self::$imageUrl     = self::$directory.self::$imageName;
             return self::$imageUrl;
         }
+
+
+       
     }
 // data store
 public static function productStore($request){
+
+    
     $request->validate([
-        'category_id'       => 'required',
-        'sub_category_id'   => 'required',
-        'brand_id'          => 'required|max:20',
-        'product_name'      => 'required|max:200',
-        'product_price'     => 'required',
-        'image'             => 'required|image|mimes:jpg,jpeg,gif,png|dimensions:min_width=300,min_height=300'
+        'category_id'           => 'required',
+        'sub_category_id'       => 'required',
+        'brand_id'              => 'required|max:20',
+        'product_name'          => 'required|max:200',
+        'product_code'          => 'required',
+        'product_model'         => 'nullable',
+        'regular_price'         => 'required',
+        'discount_price'        => 'required',
+        'short_description'     => 'nullable',
+        'long_description'      => 'nullable',
+        'image'                 => 'required|image|mimes:jpg,jpeg,gif,png'
     ]);
 
     self::$product = new Product();
-    self::$product->category_id         = $request->category_id;
-    self::$product->sub_category_id     = $request->sub_category_id;
-    self::$product->brand_id            = $request->brand_id;
-    self::$product->product_name        = $request->product_name;
-    self::$product->product_description = $request->product_description;
-    self::$product->product_price       = $request->product_price;
-    self::$product->image               = self::getImageUrl($request);
+    self::$product->category_id             = $request->category_id;
+    self::$product->sub_category_id         = $request->sub_category_id;
+    self::$product->brand_id                = $request->brand_id;
+    self::$product->product_name            = $request->product_name;
+    self::$product->product_code            = $request->product_code;
+    self::$product->product_model           = $request->product_model;
+    self::$product->stock_amount            = $request->stock_amount;
+    self::$product->regular_price           = $request->regular_price;
+    self::$product->discount_price          = $request->discount_price;
+    self::$product->short_description       = $request->short_description;
+    self::$product->long_description        = $request->long_description;
+    self::$product->image                   = self::getImageUrl($request);
     self::$product->save();
 }
-// update data
+
+//update data
 public static function updateProduct($request,$id){
 
         self::$product = Product::find($id);
-        if ($request->file('image'))
+        if ($request->hasFile('image'))
         {
             if (file_exists(self::$product->image))
             {
@@ -59,24 +81,33 @@ public static function updateProduct($request,$id){
         {
             self::$imageUrl = self::$product->image;
         }
-       self::$product->category->category_id                      = $request->category_id;
-       self::$product->sub_category->sub_category_id              = $request->sub_category_id;
-       self::$product->brand->brand_id                            = $request->brand_id;
-       self::$product->product_name                               = $request->product_name;
-       self::$product->product_description                        = $request->product_description;
-        self::$product->product_price                             = $request->product_price;
-       self::$product->image                                      = self::$imageUrl;
-       self::$product->save();
+        self::$product->category_id             = $request->category_id;
+        self::$product->sub_category_id         = $request->sub_category_id;
+        self::$product->brand_id                = $request->brand_id;
+        self::$product->product_name            = $request->product_name;
+        self::$product->product_code            = $request->product_code;
+        self::$product->product_model           = $request->product_model;
+        self::$product->regular_price           = $request->regular_price;
+        self::$product->discount_price          = $request->discount_price;
+        self::$product->short_description       = $request->short_description;
+        self::$product->long_description        = $request->long_description;
+        // self::$product->image                   = self::getImageUrl($request);
+
+         self::$product->image = self::$imageUrl;
+        self::$product->save();
     }
+
+
 
 // Delete Data
 
 public static function deleteProduct($id){
     self::$product  = Product::find($id);
 
-    if(file_exists(self::$product->image)){
-        unlink(self::$product ->image);
-    }
+   if (file_exists(public_path(self::$product->image))) {
+    unlink(public_path(self::$product->image));
+}
+
     self::$product->delete();
 }
 

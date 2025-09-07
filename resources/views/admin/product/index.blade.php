@@ -12,8 +12,11 @@
                 <th>Sub_Category Name</th>
                 <th>Brand Name</th>
                 <th>Product Name</th>
-                <th>product Description</th>
-                <th>Product Price</th>
+                <th>Product Code</th>
+                <th>Product Model</th>
+                <th>Regular price</th>
+                <th>Discount Price</th>
+                <th>Stock Amount</th>
                 <th>Image</th>
                 <th>Action</th>
             </tr>
@@ -26,8 +29,11 @@
                     <td>{{ $product->sub_category->sub_category_name?? 'null' }}</td>
                     <td>{{ $product->brand->brand_name?? 'null' }}</td>
                     <td>{{ $product->product_name}}</td>
-                    <td>{{ $product->product_description }}</td>
-                    <td>{{ $product->product_price }}</td>
+                    <td>{{ $product->product_code}}</td>
+                    <td>{{ $product->product_model}}</td>               
+                    <td>{{ $product->regular_price}}</td>
+                    <td>{{ $product->discount_price}}</td>
+                    <td>{{ $product->stock_amount}}</td>
                     <td><img src="{{ asset($product->image) }}" alt="{{ $product->imageUrl}}" height="50" width="80"/></td>
                     <td>
                         <a href="{{ route('edit_product',['id'=>$product->id]) }}" class="btn btn-sm btn-primary">
@@ -47,13 +53,6 @@
     </table>
 </div>
  {{-- data table script --}}
-<script>
-    $(document).ready(function () {
-        $('#postTable').DataTable({
-            "pageLength": 5,   // প্রতি পেজে কত data দেখাবে
-            "lengthMenu": [5, 10, 25, 50, 100], // dropdown
-        });
-    });
-</script>
+
 
 @endsection

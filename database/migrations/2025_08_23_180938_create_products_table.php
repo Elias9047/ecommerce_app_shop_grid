@@ -17,8 +17,13 @@ return new class extends Migration
             $table->integer('sub_category_id');
             $table->integer('brand_id');
             $table->string('product_name');
-            $table->text('product_description');
-            $table->integer('product_price');
+            $table->integer('product_code');
+            $table->string('product_model')->nullable();
+            $table->integer('regular_price')->default(0);
+            $table->integer('discount_price')->default(0);
+            $table->integer('stock_amount')->default(0);
+            $table->text('short_description')->nullable();
+            $table->longText('long_description')->nullable();
             $table->text('image');
             $table->timestamps();
         });
